@@ -16,6 +16,7 @@ class FrameDrawable(
 
     override fun draw(canvas: Canvas) {
         canvas.getClipBounds(canvasClipBounds)
+
         painter.drawRect(
             canvas,
             borderMargin + canvasClipBounds.left,

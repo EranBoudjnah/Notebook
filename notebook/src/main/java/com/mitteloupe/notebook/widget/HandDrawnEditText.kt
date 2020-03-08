@@ -23,9 +23,11 @@ class HandDrawnEditText @JvmOverloads constructor(
         strokeWidth = 3f
     }
 
-    private val painter: Painter = GeometryToolPainter(HandDrawingGeometryTool())
+    private val painter: Painter = GeometryToolPainter(HandDrawingGeometryTool {
+        left + top
+    })
 
-    private val borderMargin = resources.getDimension(R.dimen.hand_drawn_edit_text_border_margin)
+    private val borderMargin = resources.getDimension(R.dimen.handDrawnEditTextBorderMargin)
 
     init {
         background = FrameDrawable(

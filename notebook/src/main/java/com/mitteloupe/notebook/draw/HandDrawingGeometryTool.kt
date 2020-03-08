@@ -9,6 +9,7 @@ import kotlin.math.sqrt
 import kotlin.random.Random
 
 private const val SEGMENT_LENGTH = 8f
+private const val SEGMENT_CIRCLE_STRAIGHT_GAP = SEGMENT_LENGTH * 1.5f
 private const val SEGMENT_DISTANCE_SQUARED = SEGMENT_LENGTH * SEGMENT_LENGTH
 private const val ERROR_THRESHOLD = SEGMENT_LENGTH * SEGMENT_LENGTH * 1.5
 
@@ -59,7 +60,7 @@ class HandDrawingGeometryTool(
         }
         val angleStep = Math.PI.toFloat() * 2f / (distanceRemaining / SEGMENT_LENGTH)
         var angle = angleStep / 2f
-        while (distanceRemaining > SEGMENT_LENGTH) {
+        while (distanceRemaining > SEGMENT_CIRCLE_STRAIGHT_GAP) {
             val distanceMultiplier = min((distanceRemaining - SEGMENT_LENGTH) / 16f, 1f)
             val error = sin(errorOffset / 5f * cos(errorOffset / 4f + 2f)) / 8f * distanceMultiplier
             val angleWithError = angle + error

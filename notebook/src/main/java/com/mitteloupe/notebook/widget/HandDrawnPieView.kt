@@ -36,7 +36,7 @@ class HandDrawnPieView : View {
     private val filler: Painter = GeometryToolFiller(geometryTool) { randomSeed }
 
     private val circleMargin by lazy {
-        resources.getDimension(R.dimen.hand_drawn_pie_view_circle_margin)
+        resources.getDimension(R.dimen.handDrawnPieViewCircleMargin)
     }
 
     @JvmOverloads

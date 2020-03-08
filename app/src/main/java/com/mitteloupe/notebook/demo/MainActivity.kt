@@ -1,4 +1,4 @@
-package com.mitteloupe.notebook
+package com.mitteloupe.notebook.demo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

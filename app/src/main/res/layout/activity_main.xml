@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
     tools:context=".MainActivity">
 
-    <com.mitteloupe.notebook.NotebookView
+    <com.mitteloupe.notebook.widget.NotebookView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.mitteloupe.notebook.widget.HandDrawnEditText
         android:id="@+id/edit1"
-        android:layout_width="160sp"
+        android:layout_width="192sp"
         android:layout_height="32sp"
         android:layout_marginStart="@dimen/gridSize"
         android:layout_marginLeft="@dimen/gridSize"
@@ -27,26 +26,47 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.mitteloupe.notebook.widget.HandDrawnButton
-        android:id="@+id/edit2"
-        android:layout_width="192sp"
+        android:id="@+id/button1"
+        android:layout_width="160sp"
         android:layout_height="48sp"
         android:layout_marginStart="@dimen/gridSize"
         android:layout_marginLeft="@dimen/gridSize"
         android:layout_marginTop="@dimen/gridSize"
-        android:paddingLeft="12dp"
-        android:paddingTop="4dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="4dp"
+        android:gravity="center"
         android:text="Hello Universe!"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit1" />
+
+    <com.mitteloupe.notebook.widget.HandDrawnButton
+        android:id="@+id/button2"
+        android:layout_width="160sp"
+        android:layout_height="48sp"
+        android:layout_marginStart="@dimen/gridSize"
+        android:layout_marginLeft="@dimen/gridSize"
+        android:layout_marginTop="@dimen/gridSize"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="Hello Universe!"
+        app:layout_constraintStart_toEndOf="@id/button1"
         app:layout_constraintTop_toBottomOf="@+id/edit1" />
 
     <com.mitteloupe.notebook.widget.HandDrawnPieView
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginTop="32sp"
         android:layout_marginStart="@dimen/gridSize"
         android:layout_marginLeft="@dimen/gridSize"
+        android:layout_marginTop="32sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit2" />
+        app:layout_constraintTop_toBottomOf="@+id/button1" />
+
+    <com.mitteloupe.notebook.widget.HandDrawnCircleButton
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_margin="@dimen/gridSize"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

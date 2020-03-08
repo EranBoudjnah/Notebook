@@ -1,4 +1,4 @@
-package com.mitteloupe.notebook
+package com.mitteloupe.notebook.widget
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
+import com.mitteloupe.notebook.R
 import com.mitteloupe.notebook.draw.GridPaper
 import com.mitteloupe.notebook.draw.Paper
 

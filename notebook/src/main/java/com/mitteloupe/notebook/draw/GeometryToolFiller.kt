@@ -129,7 +129,7 @@ sealed class Filler {
         val maxYStep = paint.strokeWidth * .95f
         val minYStep = maxYStep * .25f
         val yStepMargin = maxYStep - minYStep
-        while (currentY <= height) {
+        while (currentY <= top + height) {
             val nextYRight = currentY + random.nextFloat() * yStepMargin + minYStep
             canvas.drawLine(left, currentY, right, nextYRight, paint)
             val nextYLeft = nextYRight + random.nextFloat() * yStepMargin + minYStep
@@ -152,7 +152,7 @@ sealed class Filler {
         val maxXStep = paint.strokeWidth * .95f
         val minXStep = maxXStep * .25f
         val xStepMargin = maxXStep - minXStep
-        while (currentX <= width) {
+        while (currentX <= left + width) {
             val nextXBottom = currentX + random.nextFloat() * xStepMargin + minXStep
             canvas.drawLine(currentX, top, nextXBottom, bottom, paint)
             val nextXTop = nextXBottom + random.nextFloat() * xStepMargin + minXStep

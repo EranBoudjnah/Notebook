@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="gridSize">16sp</dimen>
-    <dimen name="hand_drawn_edit_text_border_margin">4dp</dimen>
-    <dimen name="hand_drawn_pie_view_circle_margin">4dp</dimen>
-</resources>

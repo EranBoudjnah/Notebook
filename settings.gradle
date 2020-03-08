@@ -1,2 +1,3 @@
-rootProject.name='Hand Drawn Views'
+rootProject.name='Notebook'
 include ':app'
+include ':notebook'
