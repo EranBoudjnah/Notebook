@@ -45,27 +45,34 @@ class HandDrawnButton @JvmOverloads constructor(
     private var isInitialized = false
 
     init {
-        background =
+        setBackgroundDrawable(
             StateListDrawable().apply {
                 addState(
                     intArrayOf(-android.R.attr.state_enabled),
                     ButtonDrawable.Disabled(
-                        outlinePainter, fillPainter, paint, borderMargin
+                        outlinePainter, fillPainter, paint, borderMargin, resources, context.theme
                     )
                 )
                 addState(
                     intArrayOf(android.R.attr.state_pressed),
                     ButtonDrawable.Pressed(
-                        outlinePainter, fillPainter, paint, borderMargin
+                        outlinePainter, fillPainter, paint, borderMargin, resources, context.theme
                     )
                 )
                 addState(
                     intArrayOf(),
                     ButtonDrawable.Enabled(
-                        outlinePainter, fillPainter, shadowPainter, paint, borderMargin
+                        outlinePainter,
+                        fillPainter,
+                        shadowPainter,
+                        paint,
+                        borderMargin,
+                        resources,
+                        context.theme
                     )
                 )
             }
+        )
 
         setTextAppearance(
             context,

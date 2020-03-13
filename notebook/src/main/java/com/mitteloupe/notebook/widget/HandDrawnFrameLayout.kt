@@ -1,10 +1,9 @@
 package com.mitteloupe.notebook.widget
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatEditText
+import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.mitteloupe.notebook.R
@@ -13,15 +12,15 @@ import com.mitteloupe.notebook.draw.HandDrawingGeometryTool
 import com.mitteloupe.notebook.draw.Painter
 import com.mitteloupe.notebook.drawable.FrameDrawable
 
-class HandDrawnEditText @JvmOverloads constructor(
+class HandDrawnFrameLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.editTextStyle
-) : AppCompatEditText(context, attrs, defStyleAttr) {
+) : FrameLayout(context, attrs, defStyleAttr) {
     private val paint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.STROKE
-        color = ResourcesCompat.getColor(resources, R.color.editTextFrame, context.theme)
+        color = ResourcesCompat.getColor(resources, R.color.frameLayoutBorder, context.theme)
         strokeWidth = 3f
     }
 
@@ -29,14 +28,15 @@ class HandDrawnEditText @JvmOverloads constructor(
         left + top
     })
 
-    private val borderMargin = resources.getDimension(R.dimen.handDrawnEditTextBorderMargin)
+    private val borderMargin = resources.getDimension(R.dimen.handDrawnFrameLayoutBorderMargin)
 
     init {
         ViewCompat.setBackground(this, FrameDrawable(
-            painter, paint, borderMargin
-        ))
-        setTextAppearance(
-            context, R.style.HandDrawnEditText
-        )
+            painter,
+            paint,
+            borderMargin
+        ).apply {
+            alpha = 200
+        })
     }
 }

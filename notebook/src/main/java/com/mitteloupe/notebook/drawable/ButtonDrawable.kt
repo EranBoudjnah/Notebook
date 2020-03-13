@@ -1,7 +1,8 @@
 package com.mitteloupe.notebook.drawable
 
+import android.content.res.Resources
+import android.content.res.Resources.Theme
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
@@ -10,13 +11,17 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.StateListDrawable
 import androidx.annotation.ColorInt
+import androidx.core.content.res.ResourcesCompat
+import com.mitteloupe.notebook.R
 import com.mitteloupe.notebook.draw.Painter
 
 sealed class ButtonDrawable(
-    private val paint: Paint
+    private val paint: Paint,
+    resources: Resources,
+    theme: Theme
 ) : Drawable() {
     @ColorInt
-    var outlineColor = Color.argb(200, 0, 0, 0)
+    var outlineColor = ResourcesCompat.getColor(resources, R.color.buttonOutline, theme)
         set(value) {
             field = value
             invalidateSelf()
@@ -28,7 +33,7 @@ sealed class ButtonDrawable(
         }
 
     @ColorInt
-    var fillColor = Color.argb(64, 0, 180, 220)
+    var fillColor = ResourcesCompat.getColor(resources, R.color.buttonFill, theme)
         set(value) {
             field = value
             invalidateSelf()
@@ -46,8 +51,10 @@ sealed class ButtonDrawable(
         private val fillPainter: Painter,
         private val shadowPainter: Painter,
         private val paint: Paint,
-        private val borderMargin: Float
-    ) : ButtonDrawable(paint) {
+        private val borderMargin: Float,
+        resources: Resources,
+        theme: Theme
+    ) : ButtonDrawable(paint, resources, theme) {
 
         override fun draw(canvas: Canvas) {
             canvas.getClipBounds(canvasClipBounds)
@@ -88,8 +95,10 @@ sealed class ButtonDrawable(
         private val outlinePainter: Painter,
         private val fillPainter: Painter,
         private val paint: Paint,
-        private val borderMargin: Float
-    ) : ButtonDrawable(paint) {
+        private val borderMargin: Float,
+        resources: Resources,
+        theme: Theme
+    ) : ButtonDrawable(paint, resources, theme) {
         override fun draw(canvas: Canvas) {
             drawPressed(canvas, outlinePainter, fillPainter, paint, borderMargin)
         }
@@ -99,8 +108,10 @@ sealed class ButtonDrawable(
         private val outlinePainter: Painter,
         private val fillPainter: Painter,
         private val paint: Paint,
-        private val borderMargin: Float
-    ) : ButtonDrawable(paint) {
+        private val borderMargin: Float,
+        resources: Resources,
+        theme: Theme
+    ) : ButtonDrawable(paint, resources, theme) {
         override fun draw(canvas: Canvas) {
             val grayScaleMatrix = ColorMatrix().apply { setSaturation(0f) }
             colorFilter = ColorMatrixColorFilter(grayScaleMatrix)

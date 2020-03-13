@@ -42,8 +42,10 @@ class HandDrawnCircleButton @JvmOverloads constructor(
     private val textOffsetter = TextOffsetter(this, pressPadding)
 
     init {
-        background = ButtonDrawable.stateListDrawable(
-            outlinePainter, fillPainter, shadowPainter, paint, borderMargin, true
+        setBackgroundDrawable(
+            ButtonDrawable.stateListDrawable(
+                outlinePainter, fillPainter, shadowPainter, paint, borderMargin, true
+            )
         )
 
         setTextAppearance(
