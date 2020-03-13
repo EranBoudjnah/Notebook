@@ -1,7 +1,7 @@
 <resources>
 
     <style name="HandDrawnEditText">
-        <item name="android:fontFamily">@font/xkcd_script_family</item>
+        <item name="fontFamily">@font/xkcd_script_family</item>
     </style>
 
 </resources>

@@ -4,5 +4,6 @@
     <dimen name="handDrawnButtonBorderMargin">4dp</dimen>
     <dimen name="handDrawnButtonPressedTextOffset">4dp</dimen>
     <dimen name="handDrawnEditTextBorderMargin">4dp</dimen>
+    <dimen name="handDrawnFrameLayoutBorderMargin">4dp</dimen>
     <dimen name="handDrawnPieViewCircleMargin">4dp</dimen>
 </resources>
