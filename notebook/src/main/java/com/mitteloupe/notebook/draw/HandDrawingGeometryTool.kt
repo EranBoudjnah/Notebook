@@ -5,7 +5,6 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
-import kotlin.math.sqrt
 import kotlin.random.Random
 
 private const val SEGMENT_LENGTH = 8f
@@ -25,7 +24,6 @@ class HandDrawingGeometryTool(
             path.rLineTo(horizontal, vertical)
             return path
         }
-        val distance = sqrt(horizontal * horizontal + vertical * vertical)
         val angle = atan2(vertical, horizontal)
         var horizontalRemaining = horizontal
         var verticalRemaining = vertical
