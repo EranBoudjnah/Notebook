@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BorderMargins">
+        <attr name="borderMarginTop" format="dimension" />
+        <attr name="borderMarginBottom" format="dimension" />
+        <attr name="borderMarginStart" format="dimension" />
+        <attr name="borderMarginEnd" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="HandDrawnButton">
+        <attr name="borderMarginTop" />
+        <attr name="borderMarginBottom" />
+        <attr name="borderMarginStart" />
+        <attr name="borderMarginEnd" />
+        <attr name="buttonElevation" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="HandDrawnFrameLayout">
+        <attr name="borderMarginTop" />
+        <attr name="borderMarginBottom" />
+        <attr name="borderMarginStart" />
+        <attr name="borderMarginEnd" />
+    </declare-styleable>
+
+    <declare-styleable name="HandDrawnEditText">
+        <attr name="borderMarginTop" />
+        <attr name="borderMarginBottom" />
+        <attr name="borderMarginStart" />
+        <attr name="borderMarginEnd" />
+    </declare-styleable>
+</resources>
