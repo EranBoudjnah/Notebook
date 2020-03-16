@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="notebook_page_background">#FFFFFFFF</color>
+    <color name="notebook_page_background">#FFF8F8F8</color>
     <color name="notebook_page_foreground">#1E000080</color>
     <color name="buttonOutline">#C8000000</color>
     <color name="buttonFill">#4000B4DC</color>
