@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.view.ViewCompat
 import com.mitteloupe.notebook.R
 import com.mitteloupe.notebook.draw.Filler
 import com.mitteloupe.notebook.draw.GeometryToolFiller
@@ -42,7 +43,8 @@ class HandDrawnCircleButton @JvmOverloads constructor(
     private val textOffsetter = TextOffsetter(this, pressPadding)
 
     init {
-        setBackgroundDrawable(
+        ViewCompat.setBackground(
+            this,
             ButtonDrawable.stateListDrawable(
                 outlinePainter, fillPainter, shadowPainter, paint, borderMargin, true
             )

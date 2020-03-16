@@ -1,10 +1,12 @@
 package com.mitteloupe.notebook.widget
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Paint
 import android.graphics.drawable.StateListDrawable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.view.ViewCompat
 import com.mitteloupe.notebook.R
 import com.mitteloupe.notebook.draw.Filler
 import com.mitteloupe.notebook.draw.GeometryToolFiller
@@ -12,6 +14,9 @@ import com.mitteloupe.notebook.draw.GeometryToolPainter
 import com.mitteloupe.notebook.draw.HandDrawingGeometryTool
 import com.mitteloupe.notebook.draw.Painter
 import com.mitteloupe.notebook.drawable.ButtonDrawable
+import com.mitteloupe.notebook.drawable.ButtonDrawable.Margins
+import com.mitteloupe.notebook.widget.style.applyAttributes
+import com.mitteloupe.notebook.widget.style.getDimensionAttribute
 
 class HandDrawnButton @JvmOverloads constructor(
     context: Context,
@@ -35,7 +40,42 @@ class HandDrawnButton @JvmOverloads constructor(
     private val shadowPainter: Painter =
         GeometryToolFiller(geometryTool, Filler.Horizontal) { randomSeed }
 
-    private val borderMargin = resources.getDimension(R.dimen.handDrawnButtonBorderMargin)
+    private val defaultBorderMargin = resources.getDimension(R.dimen.handDrawnButtonBorderMargin)
+    var borderMarginTop = 0f
+        set(value) {
+            field = value
+            if (isInitialized) {
+                setBackground()
+            }
+        }
+    var borderMarginBottom = 0f
+        set(value) {
+            field = value
+            if (isInitialized) {
+                setBackground()
+            }
+        }
+    var borderMarginStart = 0f
+        set(value) {
+            field = value
+            if (isInitialized) {
+                setBackground()
+            }
+        }
+    var borderMarginEnd = 0f
+        set(value) {
+            field = value
+            if (isInitialized) {
+                setBackground()
+            }
+        }
+    var buttonElevation = 0f
+        set(value) {
+            field = value
+            if (isInitialized) {
+                setBackground()
+            }
+        }
 
     private val pressPadding by lazy {
         resources.getDimensionPixelOffset(R.dimen.handDrawnButtonPressedTextOffset)
@@ -45,18 +85,63 @@ class HandDrawnButton @JvmOverloads constructor(
     private var isInitialized = false
 
     init {
-        setBackgroundDrawable(
+        attrs?.applyAttributes(context, R.styleable.HandDrawnButton, defStyleAttr) { attributes ->
+            attributes.applyStyledAttributes()
+        }
+
+        setBackground()
+
+        setTextAppearance(
+            context, R.style.HandDrawnEditText
+        )
+
+        isInitialized = true
+        toggleTextPressed(!isEnabled)
+    }
+
+    private fun TypedArray.applyStyledAttributes() {
+        borderMarginTop =
+            getDimensionAttribute(R.styleable.HandDrawnButton_borderMarginTop) { defaultBorderMargin }
+        borderMarginBottom =
+            getDimensionAttribute(R.styleable.HandDrawnButton_borderMarginBottom) { defaultBorderMargin }
+        borderMarginStart =
+            getDimensionAttribute(R.styleable.HandDrawnButton_borderMarginStart) { defaultBorderMargin }
+        borderMarginEnd =
+            getDimensionAttribute(R.styleable.HandDrawnButton_borderMarginEnd) { defaultBorderMargin }
+
+        buttonElevation =
+            getDimensionAttribute(R.styleable.HandDrawnButton_buttonElevation) { borderMarginBottom * 2f }
+    }
+
+    private fun setBackground() {
+        val borderMargins = Margins(
+            borderMarginTop, borderMarginBottom, borderMarginStart, borderMarginEnd
+        )
+        ViewCompat.setBackground(
+            this,
             StateListDrawable().apply {
                 addState(
                     intArrayOf(-android.R.attr.state_enabled),
                     ButtonDrawable.Disabled(
-                        outlinePainter, fillPainter, paint, borderMargin, resources, context.theme
+                        outlinePainter,
+                        fillPainter,
+                        paint,
+                        borderMargins,
+                        buttonElevation,
+                        resources,
+                        context.theme
                     )
                 )
                 addState(
                     intArrayOf(android.R.attr.state_pressed),
                     ButtonDrawable.Pressed(
-                        outlinePainter, fillPainter, paint, borderMargin, resources, context.theme
+                        outlinePainter,
+                        fillPainter,
+                        paint,
+                        borderMargins,
+                        buttonElevation,
+                        resources,
+                        context.theme
                     )
                 )
                 addState(
@@ -66,21 +151,14 @@ class HandDrawnButton @JvmOverloads constructor(
                         fillPainter,
                         shadowPainter,
                         paint,
-                        borderMargin,
+                        borderMargins,
+                        buttonElevation,
                         resources,
                         context.theme
                     )
                 )
             }
         )
-
-        setTextAppearance(
-            context,
-            R.style.HandDrawnEditText
-        )
-
-        isInitialized = true
-        toggleTextPressed(!isEnabled)
     }
 
     override fun setPressed(pressed: Boolean) {

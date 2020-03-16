@@ -13,7 +13,7 @@ import com.mitteloupe.notebook.draw.Painter
 class FrameDrawable(
     private val painter: Painter,
     private val paint: Paint,
-    private val borderMargin: Float
+    private val borderMargins: Margins
 ) : Drawable() {
     private val canvasClipBounds = Rect()
     private var tintBlendMode: PorterDuff.Mode? = PorterDuff.Mode.SRC_IN
@@ -23,13 +23,12 @@ class FrameDrawable(
 
         painter.drawRect(
             canvas,
-            borderMargin + canvasClipBounds.left,
-            borderMargin + canvasClipBounds.top,
-            canvasClipBounds.width() - borderMargin * 2f,
-            canvasClipBounds.height() - borderMargin * 2f,
+            borderMargins.marginStart + canvasClipBounds.left,
+            borderMargins.marginTop + canvasClipBounds.top,
+            canvasClipBounds.width() - borderMargins.marginStart - borderMargins.marginEnd,
+            canvasClipBounds.height() - borderMargins.marginTop - borderMargins.marginBottom,
             paint
         )
-
     }
 
     override fun setAlpha(alpha: Int) {
@@ -54,4 +53,11 @@ class FrameDrawable(
             }
         }
     }
+
+    data class Margins(
+        val marginTop: Float,
+        val marginBottom: Float,
+        val marginStart: Float,
+        val marginEnd: Float
+    )
 }

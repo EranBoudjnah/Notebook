@@ -51,7 +51,8 @@ sealed class ButtonDrawable(
         private val fillPainter: Painter,
         private val shadowPainter: Painter,
         private val paint: Paint,
-        private val borderMargin: Float,
+        private val borderMargins: Margins,
+        private val elevationHeight: Float,
         resources: Resources,
         theme: Theme
     ) : ButtonDrawable(paint, resources, theme) {
@@ -59,33 +60,35 @@ sealed class ButtonDrawable(
         override fun draw(canvas: Canvas) {
             canvas.getClipBounds(canvasClipBounds)
 
-            val width = canvasClipBounds.width()
-            val height = canvasClipBounds.height()
+            val buttonWidth =
+                canvasClipBounds.width() - borderMargins.marginStart - borderMargins.marginEnd
+            val buttonHeight =
+                canvasClipBounds.height() - borderMargins.marginTop - borderMargins.marginBottom
 
             shadowPainter.drawRect(
                 canvas,
-                borderMargin + canvasClipBounds.left,
-                borderMargin + canvasClipBounds.top + height - borderMargin * 2f,
-                width - borderMargin * 2f,
-                borderMargin * 4f,
+                borderMargins.marginStart + canvasClipBounds.left,
+                borderMargins.marginTop + buttonHeight,
+                buttonWidth,
+                elevationHeight,
                 paint.outlineMode()
             )
 
             fillPainter.drawRect(
                 canvas,
-                borderMargin + canvasClipBounds.left,
-                borderMargin + canvasClipBounds.top,
-                width - borderMargin * 2f,
-                height - borderMargin * 2f,
+                borderMargins.marginStart + canvasClipBounds.left,
+                borderMargins.marginTop + canvasClipBounds.top,
+                buttonWidth,
+                buttonHeight,
                 paint.fillMode()
             )
 
             outlinePainter.drawRect(
                 canvas,
-                borderMargin + canvasClipBounds.left,
-                borderMargin + canvasClipBounds.top,
-                width - borderMargin * 2f,
-                height - borderMargin * 2f,
+                borderMargins.marginStart + canvasClipBounds.left,
+                borderMargins.marginTop + canvasClipBounds.top,
+                buttonWidth,
+                buttonHeight,
                 paint.outlineMode()
             )
         }
@@ -95,12 +98,13 @@ sealed class ButtonDrawable(
         private val outlinePainter: Painter,
         private val fillPainter: Painter,
         private val paint: Paint,
-        private val borderMargin: Float,
+        private val borderMargins: Margins,
+        private val elevationHeight: Float,
         resources: Resources,
         theme: Theme
     ) : ButtonDrawable(paint, resources, theme) {
         override fun draw(canvas: Canvas) {
-            drawPressed(canvas, outlinePainter, fillPainter, paint, borderMargin)
+            drawPressed(canvas, outlinePainter, fillPainter, paint, borderMargins, elevationHeight)
         }
     }
 
@@ -108,7 +112,8 @@ sealed class ButtonDrawable(
         private val outlinePainter: Painter,
         private val fillPainter: Painter,
         private val paint: Paint,
-        private val borderMargin: Float,
+        private val borderMargins: Margins,
+        private val elevationHeight: Float,
         resources: Resources,
         theme: Theme
     ) : ButtonDrawable(paint, resources, theme) {
@@ -116,7 +121,7 @@ sealed class ButtonDrawable(
             val grayScaleMatrix = ColorMatrix().apply { setSaturation(0f) }
             colorFilter = ColorMatrixColorFilter(grayScaleMatrix)
 
-            drawPressed(canvas, outlinePainter, fillPainter, paint, borderMargin)
+            drawPressed(canvas, outlinePainter, fillPainter, paint, borderMargins, elevationHeight)
         }
     }
 
@@ -135,28 +140,31 @@ sealed class ButtonDrawable(
         outlinePainter: Painter,
         fillPainter: Painter,
         paint: Paint,
-        borderMargin: Float
+        borderMargins: Margins,
+        elevationHeight: Float
     ) {
         canvas.getClipBounds(canvasClipBounds)
 
-        val width = canvasClipBounds.width()
-        val height = canvasClipBounds.height()
+        val buttonWidth =
+            canvasClipBounds.width() - borderMargins.marginStart - borderMargins.marginEnd
+        val buttonHeight =
+            canvasClipBounds.height() - borderMargins.marginTop - borderMargins.marginBottom
 
         fillPainter.drawRect(
             canvas,
-            borderMargin + canvasClipBounds.left,
-            borderMargin * 2f + canvasClipBounds.top,
-            width - borderMargin * 2f,
-            height - borderMargin * 2f,
+            borderMargins.marginStart + canvasClipBounds.left,
+            borderMargins.marginTop + elevationHeight + canvasClipBounds.top,
+            buttonWidth,
+            buttonHeight,
             paint.fillMode()
         )
 
         outlinePainter.drawRect(
             canvas,
-            borderMargin + canvasClipBounds.left,
-            borderMargin * 2f + canvasClipBounds.top,
-            width - borderMargin * 2f,
-            height - borderMargin * 2f,
+            borderMargins.marginStart + canvasClipBounds.left,
+            borderMargins.marginTop + elevationHeight + canvasClipBounds.top,
+            buttonWidth,
+            buttonHeight,
             paint.outlineMode()
         )
     }
@@ -202,4 +210,11 @@ sealed class ButtonDrawable(
             )
         }
     }
+
+    data class Margins(
+        val marginTop: Float,
+        val marginBottom: Float,
+        val marginStart: Float,
+        val marginEnd: Float
+    )
 }
