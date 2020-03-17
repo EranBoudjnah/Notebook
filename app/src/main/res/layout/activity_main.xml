@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.mitteloupe.notebook.widget.NotebookView
+    <com.mitteloupe.notebook.widget.NotebookPageView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
