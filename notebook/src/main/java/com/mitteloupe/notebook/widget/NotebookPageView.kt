@@ -2,16 +2,16 @@ package com.mitteloupe.notebook.widget
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
 import com.mitteloupe.notebook.R
-import com.mitteloupe.notebook.draw.GridPaper
-import com.mitteloupe.notebook.draw.Paper
+import com.mitteloupe.notebook.draw.paper.GridPaper
+import com.mitteloupe.notebook.draw.paper.Paper
+import com.mitteloupe.notebook.drawable.PaperDrawable
 
 class NotebookPageView : View {
     @JvmOverloads
@@ -23,19 +23,23 @@ class NotebookPageView : View {
             super(context, attrs, defStyleAttr, defStyleRes)
 
     private val backgroundPaint = Paint().apply {
-        color = ResourcesCompat.getColor(resources, R.color.notebook_page_background, context.theme)
+        color = ResourcesCompat.getColor(resources, R.color.notebookPageBackground, context.theme)
         style = Paint.Style.FILL
     }
 
     private val paperPaint = Paint().apply {
-        color = ResourcesCompat.getColor(resources, R.color.notebook_page_foreground, context.theme)
+        color = ResourcesCompat.getColor(resources, R.color.notebookPageForeground, context.theme)
         style = Paint.Style.STROKE
     }
 
-    private val paper: Paper =
+    var paper: Paper =
         GridPaper(resources.getDimensionPixelSize(R.dimen.gridSize), backgroundPaint, paperPaint)
+        set(value) {
+            field = value
+            ViewCompat.setBackground(this, PaperDrawable(paper))
+        }
 
-    override fun onDraw(canvas: Canvas) {
-        paper.draw(canvas)
+    init {
+        ViewCompat.setBackground(this, PaperDrawable(paper))
     }
 }
