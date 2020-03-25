@@ -8,11 +8,12 @@ import androidx.core.view.ViewCompat
 import com.mitteloupe.notebook.R
 import com.mitteloupe.notebook.draw.Filler
 import com.mitteloupe.notebook.draw.GeometryToolFiller
-import com.mitteloupe.notebook.draw.GeometryToolPainter
+import com.mitteloupe.notebook.draw.GeometryToolTracer
 import com.mitteloupe.notebook.draw.HandDrawingGeometryTool
 import com.mitteloupe.notebook.draw.Painter
-import com.mitteloupe.notebook.drawable.ButtonDrawable
+import com.mitteloupe.notebook.drawable.CircleButtonDrawable
 import com.mitteloupe.notebook.widget.style.TextOffsetter
+import kotlin.random.Random
 
 class HandDrawnCircleButton @JvmOverloads constructor(
     context: Context,
@@ -27,9 +28,9 @@ class HandDrawnCircleButton @JvmOverloads constructor(
         style = Paint.Style.STROKE
     }
 
-    private val geometryTool = HandDrawingGeometryTool { randomSeed }
+    private val geometryTool = HandDrawingGeometryTool { Random(randomSeed) }
 
-    private val outlinePainter: Painter = GeometryToolPainter(geometryTool)
+    private val outlinePainter: Painter = GeometryToolTracer(geometryTool)
     private val fillPainter: Painter = GeometryToolFiller(geometryTool, Filler.Both) { randomSeed }
     private val shadowPainter: Painter =
         GeometryToolFiller(geometryTool, Filler.Horizontal) { randomSeed }
@@ -45,8 +46,15 @@ class HandDrawnCircleButton @JvmOverloads constructor(
     init {
         ViewCompat.setBackground(
             this,
-            ButtonDrawable.stateListDrawable(
-                outlinePainter, fillPainter, shadowPainter, paint, borderMargin, true
+            CircleButtonDrawable.stateListDrawable(
+                outlinePainter,
+                fillPainter,
+                shadowPainter,
+                paint,
+                borderMargin,
+                true,
+                resources,
+                context.theme
             )
         )
 

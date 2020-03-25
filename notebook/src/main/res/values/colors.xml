@@ -4,6 +4,9 @@
     <color name="notebookPageForeground">#1E000080</color>
     <color name="buttonOutline">#C8000000</color>
     <color name="buttonFill">#4000B4DC</color>
+    <color name="switchOutline">#C8000000</color>
+    <color name="switchOnFill">#4000B4DC</color>
+    <color name="switchOffFill">#403090B0</color>
     <color name="editTextFrame">#C8000000</color>
     <color name="frameLayoutBorder">#C8000000</color>
     <color name="tornPaper">#CCFFFFFF</color>

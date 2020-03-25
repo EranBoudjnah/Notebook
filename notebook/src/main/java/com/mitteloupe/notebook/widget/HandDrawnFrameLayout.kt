@@ -8,12 +8,13 @@ import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.mitteloupe.notebook.R
-import com.mitteloupe.notebook.draw.GeometryToolPainter
+import com.mitteloupe.notebook.draw.GeometryToolTracer
 import com.mitteloupe.notebook.draw.HandDrawingGeometryTool
 import com.mitteloupe.notebook.draw.Painter
 import com.mitteloupe.notebook.drawable.FrameDrawable
 import com.mitteloupe.notebook.widget.style.applyAttributes
 import com.mitteloupe.notebook.widget.style.getDimensionAttribute
+import kotlin.random.Random
 
 class HandDrawnFrameLayout @JvmOverloads constructor(
     context: Context,
@@ -27,8 +28,8 @@ class HandDrawnFrameLayout @JvmOverloads constructor(
         strokeWidth = 3f
     }
 
-    private val painter: Painter = GeometryToolPainter(HandDrawingGeometryTool {
-        left + top
+    private val painter: Painter = GeometryToolTracer(HandDrawingGeometryTool {
+        Random(left + top)
     })
 
     private val defaultBorderMargin =
@@ -66,7 +67,11 @@ class HandDrawnFrameLayout @JvmOverloads constructor(
         }
 
     init {
-        attrs?.applyAttributes(context, R.styleable.HandDrawnFrameLayout, defStyleAttr) { attributes ->
+        attrs?.applyAttributes(
+            context,
+            R.styleable.HandDrawnFrameLayout,
+            defStyleAttr
+        ) { attributes ->
             attributes.applyStyledAttributes()
         }
 

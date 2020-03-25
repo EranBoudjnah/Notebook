@@ -33,6 +33,32 @@ class GeometryToolFiller(
         canvas.restore()
     }
 
+    override fun drawCapsule(
+        canvas: Canvas,
+        x: Float,
+        y: Float,
+        width: Float,
+        height: Float,
+        paint: Paint
+    ) {
+        val radius = height / 2f
+        val straightWidth = height - width
+        val centerXStart = radius
+        val centerXEnd = centerXStart + straightWidth
+        val centerY = radius
+        val capsulePath = geometryTool.arcPath(centerXStart, centerY, radius, -180f, 0f).apply {
+            geometryTool.linePath(straightWidth, 0f, this)
+            geometryTool.arcPath(centerXEnd, centerY, radius, 0f, 180f)
+            geometryTool.linePath(-straightWidth, 0f, this)
+            close()
+        }
+        canvas.save()
+        canvas.clipPath(capsulePath)
+        val random = Random(randomSeedProvider())
+        filler.draw(canvas, x, y, width, height, paint, random)
+        canvas.restore()
+    }
+
     override fun drawRect(
         canvas: Canvas,
         x: Float,
@@ -55,10 +81,15 @@ class GeometryToolFiller(
         y: Float,
         horizontal: Float,
         vertical: Float,
-        paint: Paint
+        paint: Paint,
+        path: Path
     ) {
-        val path = Path().apply {
-            moveTo(x, y)
+        path.apply {
+            if (isEmpty) {
+                moveTo(x, y)
+            } else {
+                lineTo(x, y)
+            }
         }
         geometryTool.linePath(horizontal, vertical, path)
         canvas.drawPath(path, paint)

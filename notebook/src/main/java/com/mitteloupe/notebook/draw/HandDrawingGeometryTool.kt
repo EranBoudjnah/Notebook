@@ -1,6 +1,7 @@
 package com.mitteloupe.notebook.draw
 
 import android.graphics.Path
+import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.min
@@ -13,7 +14,7 @@ private const val SEGMENT_DISTANCE_SQUARED = SEGMENT_LENGTH * SEGMENT_LENGTH
 private const val ERROR_THRESHOLD = SEGMENT_LENGTH * SEGMENT_LENGTH * 1.5
 
 class HandDrawingGeometryTool(
-    private val randomSeedProvider: () -> Int = { Random.nextInt() }
+    private val randomProvider: () -> Random = { Random.Default }
 ) : GeometryTool() {
     override fun linePath(
         horizontal: Float,
@@ -27,7 +28,7 @@ class HandDrawingGeometryTool(
         val angle = atan2(vertical, horizontal)
         var horizontalRemaining = horizontal
         var verticalRemaining = vertical
-        val random = Random(randomSeedProvider())
+        val random = randomProvider()
         var errorOffset = random.nextFloat() * 256f
         while (horizontalRemaining * horizontalRemaining + verticalRemaining * verticalRemaining > SEGMENT_DISTANCE_SQUARED) {
             val error = sin(errorOffset / 5f * cos(errorOffset / 4f + 2f)) / 18f
@@ -46,18 +47,38 @@ class HandDrawingGeometryTool(
     }
 
     override fun circlePath(
-        x: Float,
-        y: Float,
+        centerX: Float,
+        centerY: Float,
         radius: Float
+    ) = arcPath(centerX, centerY, radius, 0f, 360f, Path()).apply {
+        close()
+    }
+
+    override fun arcPath(
+        centerX: Float,
+        centerY: Float,
+        radius: Float,
+        startAngle: Float,
+        endAngle: Float,
+        path: Path
     ): Path {
-        var distanceRemaining = radius * 2f * Math.PI.toFloat()
-        val random = Random(randomSeedProvider())
+        val partOfCircle = abs(endAngle - startAngle) / 360f
+        val circumference = radius * 2f * Math.PI.toFloat()
+        var distanceRemaining = circumference * partOfCircle
+        val random = randomProvider()
         var errorOffset = random.nextFloat() * 256f
-        val path = Path().apply {
-            moveTo(x, y - radius)
+        path.apply {
+            val startAngleRadians = startAngle.toRadians()
+            val startX = centerX + sin(startAngleRadians) * radius
+            val startY = centerY - cos(startAngleRadians) * radius
+            if (isEmpty) {
+                moveTo(startX, startY)
+            } else {
+                lineTo(startX, startY)
+            }
         }
-        val angleStep = Math.PI.toFloat() * 2f / (distanceRemaining / SEGMENT_LENGTH)
-        var angle = angleStep / 2f
+        val angleStep = Math.PI.toFloat() * 2f / (circumference / SEGMENT_LENGTH)
+        var angle = startAngle.toRadians() + angleStep / 2f
         while (distanceRemaining > SEGMENT_CIRCLE_STRAIGHT_GAP) {
             val distanceMultiplier = min((distanceRemaining - SEGMENT_LENGTH) / 16f, 1f)
             val error = sin(errorOffset / 5f * cos(errorOffset / 4f + 2f)) / 8f * distanceMultiplier
@@ -69,7 +90,13 @@ class HandDrawingGeometryTool(
             errorOffset++
             angle += angleStep
         }
-        path.close()
+        val endAngleRadians = endAngle.toRadians()
+        path.lineTo(
+            centerX + sin(endAngleRadians) * radius,
+            centerY - cos(endAngleRadians) * radius
+        )
         return path
     }
+
+    private fun Float.toRadians() = this / 180f * Math.PI.toFloat()
 }

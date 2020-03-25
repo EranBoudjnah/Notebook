@@ -10,12 +10,13 @@ import android.util.AttributeSet
 import android.view.View
 import com.mitteloupe.notebook.R
 import com.mitteloupe.notebook.draw.GeometryToolFiller
-import com.mitteloupe.notebook.draw.GeometryToolPainter
+import com.mitteloupe.notebook.draw.GeometryToolTracer
 import com.mitteloupe.notebook.draw.HandDrawingGeometryTool
 import com.mitteloupe.notebook.draw.Painter
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
+import kotlin.random.Random
 
 class HandDrawnPieView : View {
     private val randomSeed: Int
@@ -29,10 +30,10 @@ class HandDrawnPieView : View {
     }
 
     private val geometryTool by lazy {
-        HandDrawingGeometryTool { randomSeed }
+        HandDrawingGeometryTool { Random(randomSeed) }
     }
 
-    private val painter: Painter = GeometryToolPainter(geometryTool)
+    private val painter: Painter = GeometryToolTracer(geometryTool)
     private val filler: Painter = GeometryToolFiller(geometryTool) { randomSeed }
 
     private val circleMargin by lazy {

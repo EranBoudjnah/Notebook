@@ -10,13 +10,14 @@ import androidx.core.view.ViewCompat
 import com.mitteloupe.notebook.R
 import com.mitteloupe.notebook.draw.Filler
 import com.mitteloupe.notebook.draw.GeometryToolFiller
-import com.mitteloupe.notebook.draw.GeometryToolPainter
+import com.mitteloupe.notebook.draw.GeometryToolTracer
 import com.mitteloupe.notebook.draw.HandDrawingGeometryTool
 import com.mitteloupe.notebook.draw.Painter
 import com.mitteloupe.notebook.drawable.ButtonDrawable
 import com.mitteloupe.notebook.drawable.ButtonDrawable.Margins
 import com.mitteloupe.notebook.widget.style.applyAttributes
 import com.mitteloupe.notebook.widget.style.getDimensionAttribute
+import kotlin.random.Random
 
 class HandDrawnButton @JvmOverloads constructor(
     context: Context,
@@ -32,10 +33,10 @@ class HandDrawnButton @JvmOverloads constructor(
     }
 
     private val geometryTool by lazy {
-        HandDrawingGeometryTool { randomSeed }
+        HandDrawingGeometryTool { Random(randomSeed) }
     }
 
-    private val outlinePainter: Painter = GeometryToolPainter(geometryTool)
+    private val outlinePainter: Painter = GeometryToolTracer(geometryTool)
     private val fillPainter: Painter = GeometryToolFiller(geometryTool, Filler.Both) { randomSeed }
     private val shadowPainter: Painter =
         GeometryToolFiller(geometryTool, Filler.Horizontal) { randomSeed }

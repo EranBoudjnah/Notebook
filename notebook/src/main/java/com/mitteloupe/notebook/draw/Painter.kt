@@ -2,6 +2,7 @@ package com.mitteloupe.notebook.draw
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Path
 
 interface Painter {
     fun drawCircle(
@@ -9,6 +10,15 @@ interface Painter {
         centerX: Float,
         centerY: Float,
         radius: Float,
+        paint: Paint
+    )
+
+    fun drawCapsule(
+        canvas: Canvas,
+        x: Float,
+        y: Float,
+        width: Float,
+        height: Float,
         paint: Paint
     )
 
@@ -27,7 +37,8 @@ interface Painter {
         y: Float,
         horizontal: Float,
         vertical: Float,
-        paint: Paint
+        paint: Paint,
+        path: Path = Path()
     )
 
     class Fake : Painter {
@@ -36,6 +47,15 @@ interface Painter {
             centerX: Float,
             centerY: Float,
             radius: Float,
+            paint: Paint
+        ) = Unit
+
+        override fun drawCapsule(
+            canvas: Canvas,
+            x: Float,
+            y: Float,
+            width: Float,
+            height: Float,
             paint: Paint
         ) = Unit
 
@@ -54,7 +74,8 @@ interface Painter {
             y: Float,
             horizontal: Float,
             vertical: Float,
-            paint: Paint
+            paint: Paint,
+            path: Path
         ) = Unit
     }
 }

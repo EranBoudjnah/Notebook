@@ -9,7 +9,6 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.StateListDrawable
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import com.mitteloupe.notebook.R
@@ -179,36 +178,6 @@ sealed class ButtonDrawable(
         color = outlineColor
         strokeWidth = outlineStrokeWidth
         return this
-    }
-
-    companion object {
-        fun stateListDrawable(
-            outlinePainter: Painter,
-            fillPainter: Painter,
-            shadowPainter: Painter,
-            paint: Paint,
-            borderMargin: Float,
-            layerTypeSet: Boolean
-        ) = StateListDrawable().apply {
-            addState(
-                intArrayOf(-android.R.attr.state_enabled),
-                CircleButtonDrawable.Disabled(
-                    outlinePainter, fillPainter, paint, borderMargin
-                )
-            )
-            addState(
-                intArrayOf(android.R.attr.state_pressed),
-                CircleButtonDrawable.Pressed(
-                    outlinePainter, fillPainter, paint, borderMargin
-                )
-            )
-            addState(
-                intArrayOf(),
-                CircleButtonDrawable.Enabled(
-                    outlinePainter, fillPainter, shadowPainter, paint, borderMargin, layerTypeSet
-                )
-            )
-        }
     }
 
     data class Margins(

@@ -1,7 +1,6 @@
 package com.mitteloupe.notebook.draw.paper
 
 import android.graphics.Canvas
-import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 
 interface Paper {

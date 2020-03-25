@@ -27,9 +27,18 @@ abstract class GeometryTool {
     }
 
     abstract fun circlePath(
-        x: Float,
-        y: Float,
+        centerX: Float,
+        centerY: Float,
         radius: Float
+    ): Path
+
+    abstract fun arcPath(
+        centerX: Float,
+        centerY: Float,
+        radius: Float,
+        startAngle: Float,
+        endAngle: Float,
+        path: Path = Path()
     ): Path
 
     class Fake : GeometryTool() {
@@ -37,6 +46,15 @@ abstract class GeometryTool {
 
         override fun rectanglePath(x: Float, y: Float, width: Float, height: Float) = Path()
 
-        override fun circlePath(x: Float, y: Float, radius: Float) = Path()
+        override fun circlePath(centerX: Float, centerY: Float, radius: Float) = Path()
+
+        override fun arcPath(
+            centerX: Float,
+            centerY: Float,
+            radius: Float,
+            startAngle: Float,
+            endAngle: Float,
+            path: Path
+        ) = Path()
     }
 }

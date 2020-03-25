@@ -8,13 +8,14 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.mitteloupe.notebook.R
-import com.mitteloupe.notebook.draw.GeometryToolPainter
+import com.mitteloupe.notebook.draw.GeometryToolTracer
 import com.mitteloupe.notebook.draw.HandDrawingGeometryTool
 import com.mitteloupe.notebook.draw.Painter
 import com.mitteloupe.notebook.drawable.FrameDrawable
 import com.mitteloupe.notebook.drawable.FrameDrawable.Margins
 import com.mitteloupe.notebook.widget.style.applyAttributes
 import com.mitteloupe.notebook.widget.style.getDimensionAttribute
+import kotlin.random.Random
 
 class HandDrawnEditText @JvmOverloads constructor(
     context: Context,
@@ -28,8 +29,8 @@ class HandDrawnEditText @JvmOverloads constructor(
         strokeWidth = 3f
     }
 
-    private val painter: Painter = GeometryToolPainter(HandDrawingGeometryTool {
-        left + top
+    private val painter: Painter = GeometryToolTracer(HandDrawingGeometryTool {
+        Random(left + top)
     })
 
     private val defaultBorderMargin = resources.getDimension(R.dimen.handDrawnEditTextBorderMargin)
