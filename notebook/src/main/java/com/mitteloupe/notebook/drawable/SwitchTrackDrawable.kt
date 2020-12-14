@@ -3,13 +3,10 @@ package com.mitteloupe.notebook.drawable
 import android.content.res.Resources
 import android.content.res.Resources.Theme
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.StateListDrawable
@@ -67,7 +64,6 @@ sealed class SwitchTrackDrawable(
 
     class On(
         private val outlinePainter: Painter,
-        private val fillPainter: Painter,
         private val paint: Paint,
         resources: Resources,
         theme: Theme
@@ -75,19 +71,12 @@ sealed class SwitchTrackDrawable(
 
         override fun draw(canvas: Canvas) {
             colorFilter = null
-            drawOn(
-                canvas,
-                outlinePainter,
-                fillPainter,
-                paint,
-                true
-            )
+            drawOn(canvas, outlinePainter, paint)
         }
     }
 
     class Off(
         private val outlinePainter: Painter,
-        private val fillPainter: Painter,
         private val paint: Paint,
         resources: Resources,
         theme: Theme
@@ -95,21 +84,13 @@ sealed class SwitchTrackDrawable(
 
         override fun draw(canvas: Canvas) {
             colorFilter = null
-            drawOn(
-                canvas,
-                outlinePainter,
-                fillPainter,
-                paint,
-                false
-            )
+            drawOn(canvas, outlinePainter, paint)
         }
     }
 
     class Disabled(
         private val outlinePainter: Painter,
-        private val fillPainter: Painter,
         private val paint: Paint,
-        private val borderMargin: Float,
         resources: Resources,
         theme: Theme
     ) : SwitchTrackDrawable(paint, resources, theme) {
@@ -117,7 +98,7 @@ sealed class SwitchTrackDrawable(
             val grayScaleMatrix = ColorMatrix().apply { setSaturation(0f) }
             colorFilter = ColorMatrixColorFilter(grayScaleMatrix)
 
-            drawPressed(canvas, outlinePainter, fillPainter, paint, borderMargin)
+            drawPressed(canvas, outlinePainter, paint)
         }
     }
 
@@ -134,26 +115,25 @@ sealed class SwitchTrackDrawable(
     internal fun drawOn(
         canvas: Canvas,
         outlinePainter: Painter,
-        fillPainter: Painter,
-        paint: Paint,
-        switchIsOn: Boolean
+        paint: Paint
     ) {
         canvas.getClipBounds(canvasClipBounds)
 
         drawTrack(
-            outlinePainter, canvas,
-            bounds.left.toFloat(), bounds.top.toFloat(),
-            bounds.width().toFloat(), bounds.height().toFloat(),
-            paint, fillPainter, switchIsOn
+            outlinePainter,
+            canvas,
+            bounds.left.toFloat(),
+            bounds.top.toFloat(),
+            bounds.width().toFloat(),
+            bounds.height().toFloat(),
+            paint
         )
     }
 
     internal fun drawPressed(
         canvas: Canvas,
         outlinePainter: Painter,
-        fillPainter: Painter,
-        paint: Paint,
-        borderMargin: Float
+        paint: Paint
     ) {
         canvas.getClipBounds(canvasClipBounds)
 
@@ -162,9 +142,7 @@ sealed class SwitchTrackDrawable(
             canvas,
             bounds.left.toFloat(), bounds.top.toFloat(),
             bounds.width().toFloat(), bounds.height().toFloat(),
-            paint,
-            fillPainter,
-            false
+            paint
         )
     }
 
@@ -175,34 +153,9 @@ sealed class SwitchTrackDrawable(
         y: Float,
         width: Float,
         height: Float,
-        paint: Paint,
-        fillPainter: Painter,
-        switchIsOn: Boolean
+        paint: Paint
     ) {
         outlinePainter.drawCapsule(canvas, x, y, width, height, paint.outlineMode())
-
-//        outlinePainter.drawCircle(
-//            canvas, centerX, centerY, radius, paint.outlineMode()
-//        )
-
-//        fillPainter.drawCircle(
-//            canvas, centerX, centerY, radius, paint.fillMode(switchIsOn)
-//        )
-    }
-
-    private fun Paint.fillMode(isOn: Boolean): Paint {
-        style = Paint.Style.STROKE
-        color = if (isOn) onColor else offColor
-        strokeWidth = fillStrokeWidth
-        xfermode = null
-        return this
-    }
-
-    private fun Paint.clearMode(): Paint {
-        style = Paint.Style.FILL
-        color = Color.TRANSPARENT
-        xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-        return this
     }
 
     private fun Paint.outlineMode(): Paint {
@@ -216,9 +169,7 @@ sealed class SwitchTrackDrawable(
     companion object {
         fun stateListDrawable(
             outlinePainter: Painter,
-            fillPainter: Painter,
             paint: Paint,
-            borderMargin: Float,
             resources: Resources,
             theme: Theme,
             width: Int = 0,
@@ -226,23 +177,11 @@ sealed class SwitchTrackDrawable(
         ) = StateListDrawable().apply {
             addState(
                 intArrayOf(-android.R.attr.state_checked),
-                Off(
-                    outlinePainter,
-                    fillPainter,
-                    paint,
-                    resources,
-                    theme
-                ).withSize(width, height)
+                Off(outlinePainter, paint, resources, theme).withSize(width, height)
             )
             addState(
                 intArrayOf(android.R.attr.state_checked),
-                On(
-                    outlinePainter,
-                    fillPainter,
-                    paint,
-                    resources,
-                    theme
-                ).withSize(width, height)
+                On(outlinePainter, paint, resources, theme).withSize(width, height)
             )
         }
 

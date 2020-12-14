@@ -2,6 +2,7 @@ package com.mitteloupe.notebook.draw.paper
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.os.Build
 
 class GridPaper(
     private val sizePixels: Int,
@@ -13,9 +14,7 @@ class GridPaper(
     override fun draw(canvas: Canvas) {
         val canvasWidth = canvas.width.toFloat()
         val canvasHeight = canvas.height.toFloat()
-        canvas.saveLayerAlpha(
-            0f, 0f, canvasWidth, canvasHeight, alpha, Canvas.ALL_SAVE_FLAG
-        )
+        canvas.saveLayerAlphaCompat(0f, 0f, canvasWidth, canvasHeight, alpha)
         canvas.drawRect(0f, 0f, canvasWidth, canvasHeight, backgroundPaint)
 
         for (x in sizePixels - 1 until canvas.width step sizePixels) {
@@ -28,5 +27,18 @@ class GridPaper(
             canvas.drawLine(0f, yOnCanvas, canvasWidth, yOnCanvas, drawPaint)
         }
         canvas.restore()
+    }
+
+    private fun Canvas.saveLayerAlphaCompat(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        alpha: Int
+    ) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        saveLayerAlpha(left, top, right, bottom, alpha)
+    } else {
+        @Suppress("DEPRECATION")
+        saveLayerAlpha(left, top, right, bottom, alpha, Canvas.ALL_SAVE_FLAG)
     }
 }

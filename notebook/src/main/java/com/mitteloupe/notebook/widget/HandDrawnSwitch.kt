@@ -46,7 +46,7 @@ class HandDrawnSwitch @JvmOverloads constructor(
             context.theme, 64, 64
         )
         trackDrawable = SwitchTrackDrawable.stateListDrawable(
-            outlinePainter, fillPainter, paint, circleMargin, resources, context.theme, 64, 64
+            outlinePainter, paint, resources, context.theme, 64, 64
         )
     }
 }
