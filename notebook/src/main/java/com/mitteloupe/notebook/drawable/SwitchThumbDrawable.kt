@@ -3,14 +3,12 @@ package com.mitteloupe.notebook.drawable
 import android.content.res.Resources
 import android.content.res.Resources.Theme
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.StateListDrawable
 import androidx.annotation.ColorInt
@@ -18,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.mitteloupe.notebook.R
 import com.mitteloupe.notebook.draw.Painter
 import kotlin.math.min
+
 
 sealed class SwitchThumbDrawable(
     private val paint: Paint,
@@ -240,15 +239,20 @@ sealed class SwitchThumbDrawable(
         outlinePainter: Painter
     ) {
         if (!layerTypeSet) {
-            canvas.saveLayer(null, null, Canvas.ALL_SAVE_FLAG)
+            canvas.saveLayerCompat(null, null)
         }
+
+        canvas.save()
+
+        outlinePainter.clipCircle(
+            canvas, centerX, centerY, radius
+        )
+
         shadowPainter.drawCircle(
             canvas, centerX, centerY + borderMargin, radius, paint.outlineMode()
         )
 
-        outlinePainter.drawCircle(
-            canvas, centerX, centerY, radius, paint.clearMode()
-        )
+        canvas.restore()
 
         if (!layerTypeSet) {
             canvas.restore()
@@ -260,13 +264,6 @@ sealed class SwitchThumbDrawable(
         color = if (isOn) onColor else offColor
         strokeWidth = fillStrokeWidth
         xfermode = null
-        return this
-    }
-
-    private fun Paint.clearMode(): Paint {
-        style = Paint.Style.FILL
-        color = Color.TRANSPARENT
-        xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
         return this
     }
 
@@ -330,4 +327,13 @@ sealed class SwitchThumbDrawable(
             this.height = height
         }
     }
+
+    private fun Canvas.saveLayerCompat(bounds: RectF?, paint: Paint?) =
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            saveLayer(bounds, paint, Canvas.ALL_SAVE_FLAG)
+            saveLayer(bounds, paint)
+        } else {
+            @Suppress("DEPRECATION")
+            saveLayer(bounds, paint, Canvas.ALL_SAVE_FLAG)
+        }
 }

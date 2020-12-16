@@ -3,10 +3,17 @@ package com.mitteloupe.notebook.draw
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.Region
+import android.os.Build
 
 class GeometryToolTracer(
     private val geometryTool: GeometryTool
 ) : Painter {
+    override fun clipCircle(canvas: Canvas, centerX: Float, centerY: Float, radius: Float) {
+        val path = geometryTool.circlePath(centerX, centerY, radius)
+        canvas.clipOutPathCompat(path)
+    }
+
     override fun drawCircle(
         canvas: Canvas,
         centerX: Float,
@@ -70,5 +77,14 @@ class GeometryToolTracer(
         }
         geometryTool.linePath(horizontal, vertical, path)
         canvas.drawPath(path, paint)
+    }
+
+    private fun Canvas.clipOutPathCompat(path: Path) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            clipOutPath(path)
+        } else {
+            @Suppress("DEPRECATION")
+            clipPath(path, Region.Op.DIFFERENCE)
+        }
     }
 }

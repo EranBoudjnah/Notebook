@@ -10,6 +10,8 @@ class GeometryToolFiller(
     private val filler: Filler = Filler.Horizontal,
     private val randomSeedProvider: () -> Int = { Random.nextInt() }
 ) : Painter {
+    override fun clipCircle(canvas: Canvas, centerX: Float, centerY: Float, radius: Float) = Unit
+
     override fun drawCircle(
         canvas: Canvas,
         centerX: Float,

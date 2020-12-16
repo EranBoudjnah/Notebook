@@ -5,6 +5,13 @@ import android.graphics.Paint
 import android.graphics.Path
 
 interface Painter {
+    fun clipCircle(
+        canvas: Canvas,
+        centerX: Float,
+        centerY: Float,
+        radius: Float
+    )
+
     fun drawCircle(
         canvas: Canvas,
         centerX: Float,
@@ -42,6 +49,9 @@ interface Painter {
     )
 
     class Fake : Painter {
+        override fun clipCircle(canvas: Canvas, centerX: Float, centerY: Float, radius: Float) =
+            Unit
+
         override fun drawCircle(
             canvas: Canvas,
             centerX: Float,
